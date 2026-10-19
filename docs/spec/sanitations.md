@@ -25,3 +25,5 @@ The following command was used to generate the Ballerina client from the OpenAPI
 bal openapi -i docs/spec/aligned_ballerina_openapi.json -o ballerina --mode client --client-methods remote --license docs/license.txt
 ```
 Note: The license year is hardcoded to 2024, change if necessary.
+
+Note: The generated client copies each typed queries record into a plain map (`{...queries}`) to add the `key` query parameter. The copy drops the `@http:Query` name annotations, so renamed parameters such as `timeLimit` are sent under their Ballerina names instead of their wire names (`time_limit`). After generating the client, replace every `map<anydata> queryParam = {...queries};` in `ballerina/client.bal` with `map<anydata> queryParam = {...http:getQueryMap(queries)};`. `tooling/postfix.py` does this in its `query names` step.

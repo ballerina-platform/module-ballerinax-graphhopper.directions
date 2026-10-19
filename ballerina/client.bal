@@ -43,7 +43,7 @@ public isolated client class Client {
     # + return - Routing Result 
     remote isolated function getRoute(map<string|string[]> headers = {}, *GetRouteQueries queries) returns RouteResponse|error {
         string resourcePath = string `/route`;
-        map<anydata> queryParam = {...queries};
+        map<anydata> queryParam = {...http:getQueryMap(queries)};
         queryParam["key"] = self.apiKeyConfig.'key;
         map<Encoding> queryParamEncoding = {"point": {style: FORM, explode: true}, "point_hint": {style: FORM, explode: true}, "snap_prevention": {style: FORM, explode: true}, "curbside": {style: FORM, explode: true}, "details": {style: FORM, explode: true}, "heading": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -73,7 +73,7 @@ public isolated client class Client {
     # + return - Isochrone Result 
     remote isolated function getIsochrone(map<string|string[]> headers = {}, *GetIsochroneQueries queries) returns IsochroneResponse|error {
         string resourcePath = string `/isochrone`;
-        map<anydata> queryParam = {...queries};
+        map<anydata> queryParam = {...http:getQueryMap(queries)};
         queryParam["key"] = self.apiKeyConfig.'key;
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         return self.clientEp->get(resourcePath, headers);
@@ -86,7 +86,7 @@ public isolated client class Client {
     # + return - Matrix API response 
     remote isolated function getMatrix(map<string|string[]> headers = {}, *GetMatrixQueries queries) returns MatrixResponse|error {
         string resourcePath = string `/matrix`;
-        map<anydata> queryParam = {...queries};
+        map<anydata> queryParam = {...http:getQueryMap(queries)};
         queryParam["key"] = self.apiKeyConfig.'key;
         map<Encoding> queryParamEncoding = {"point": {style: FORM, explode: true}, "from_point": {style: FORM, explode: true}, "to_point": {style: FORM, explode: true}, "point_hint": {style: FORM, explode: true}, "from_point_hint": {style: FORM, explode: true}, "to_point_hint": {style: FORM, explode: true}, "snap_prevention": {style: FORM, explode: true}, "curbside": {style: FORM, explode: true}, "from_curbside": {style: FORM, explode: true}, "to_curbside": {style: FORM, explode: true}, "out_array": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -146,7 +146,7 @@ public isolated client class Client {
     # + return - Map matching result 
     remote isolated function matchGpx(xml payload, map<string|string[]> headers = {}, *MatchGpxQueries queries) returns RouteResponse|error {
         string resourcePath = string `/match`;
-        map<anydata> queryParam = {...queries};
+        map<anydata> queryParam = {...http:getQueryMap(queries)};
         queryParam["key"] = self.apiKeyConfig.'key;
         map<Encoding> queryParamEncoding = {"details": {style: FORM, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
@@ -162,7 +162,7 @@ public isolated client class Client {
     # + return - An array found locations 
     remote isolated function getGeocode(map<string|string[]> headers = {}, *GetGeocodeQueries queries) returns GeocodingResponse|error {
         string resourcePath = string `/geocode`;
-        map<anydata> queryParam = {...queries};
+        map<anydata> queryParam = {...http:getQueryMap(queries)};
         queryParam["key"] = self.apiKeyConfig.'key;
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         return self.clientEp->get(resourcePath, headers);

@@ -132,7 +132,8 @@ service / on ep0 {
         return {
             polygons: [
                 {
-                    properties: {bucket: 0},
+                    // Echo the received time limit so tests can check its wire name
+                    properties: {bucket: 0, "time_limit": timeLimit},
                     geometry: {
                         'type: "Polygon",
                         coordinates: [[[13.3888, 52.5170], [13.4210, 52.5301], [13.4402, 52.5074], [13.3888, 52.5170]]]

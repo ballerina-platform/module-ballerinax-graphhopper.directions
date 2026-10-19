@@ -50,6 +50,14 @@ isolated function testGetIsochrone() returns error? {
     test:assertTrue((response.polygons ?: []).length() > 0);
 }
 
+@test:Config {groups: ["mock_tests"]}
+isolated function testGetIsochroneSendsQueryWireName() returns error? {
+    IsochroneResponse response = check graphhopper->getIsochrone(point = BERLIN_START, timeLimit = 900);
+    IsochroneResponsePolygon[] polygons = response.polygons ?: [];
+    test:assertTrue(polygons.length() > 0);
+    test:assertEquals((polygons[0].properties ?: {})["time_limit"], 900, "timeLimit was not sent as time_limit");
+}
+
 @test:Config {groups: ["live_tests", "mock_tests"]}
 isolated function testGetMatrix() returns error? {
     MatrixResponse response = check graphhopper->getMatrix(point = [BERLIN_START, BERLIN_END, "52.520008,13.404954"], outArray = ["times", "distances"]);

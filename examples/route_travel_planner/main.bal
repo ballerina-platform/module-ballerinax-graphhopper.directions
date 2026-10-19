@@ -33,9 +33,12 @@ public function main() returns error? {
     }
     decimal distanceMeters = paths[0].distance ?: 0d;
     int travelTimeMillis = paths[0].time ?: 0;
-    io:println(string `Route: ${(distanceMeters / 1000).toString()} km, ${(travelTimeMillis / 60000).toString()} minutes`);
+    io:println(string `Route: ${(distanceMeters / 1000).toString()} km, ${(<decimal>travelTimeMillis / 60000).toString()} minutes`);
 
     // Step 3: Compute the area reachable from the origin within the given travel time.
+    if reachableMinutes <= 0 || reachableMinutes > int:SIGNED32_MAX_VALUE / 60 {
+        return error(string `reachableMinutes must be between 1 and ${int:SIGNED32_MAX_VALUE / 60}`);
+    }
     directions:IsochroneResponse isochrone = check graphhopper->getIsochrone(point = origin, timeLimit = <int:Signed32>(reachableMinutes * 60), profile = "car");
     io:println(string `Reachable areas within ${reachableMinutes.toString()} minutes: ${(isochrone.polygons ?: []).length().toString()}`);
 }
